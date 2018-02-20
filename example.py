@@ -10,14 +10,14 @@ import time
 import sys
 import bluetooth
 
-def show_files(filelist, delay=1):
+def show_files(protocol, device, filelist, delay=1):
 	for f in filelist:
 		bytes = divoom_image.image_to_divoom(f)
-		pkg = thing.create_image_package(bytes)
-		dev.send(pkg)
+		pkg = protocol.create_image_package(bytes)
+		device.send(pkg)
 		time.sleep(delay)
 
-def blink(filename):
+def blink(protocol, device, filename):
 	for c in range(1, 20):
 		f = ""
 		if (c % 2 == 0):
@@ -25,19 +25,19 @@ def blink(filename):
 		else:
 			f = "images/black.bmp"
 		bytes = divoom_image.image_to_divoom(f)
-		pkg = thing.create_image_package(bytes)
-		dev.send(pkg)
+		pkg = protocol.create_image_package(bytes)
+		device.send(pkg)
 		time.sleep(0.5)
 
-def firework():
+def firework(protocol, device):
 	basename = "images/firework"
 	firework_files = []
 	for n in range(1,9):
 		firework_files.append(basename + str(n) + ".bmp")
 	firework_files.append("images/black.bmp")
-	show_files(firework_files, 0.3)
+	show_files(protocol, device, firework_files, 0.3)
 	
-def firework_predefined():
+def firework_predefined(protocol, device):
 	basename = "images/firework"
 	firework_files = []
 	for n in range(1,9):
@@ -46,11 +46,11 @@ def firework_predefined():
 	for f in firework_files:
 		bytes = divoom_image.image_to_divoom(f)
 		raw_data_packages.append(bytes)
-	pkgs = thing.create_animation_packages(raw_data_packages, 0)
+	pkgs = protocol.create_animation_packages(raw_data_packages, 0)
 	for i in range(0, len(pkgs)):
-		dev.send(pkgs[i])
+		device.send(pkgs[i])
 		
-def hello_world():
+def hello_world(protocol, device):
 	img = divoom_image.draw_text_to_image(text="HELLO WORLD", color=divoom_image.BMP_YELLOW, size=(70, 10))
 	sliced_images = divoom_image.horizontal_slices(img)
 	# create divoom packages
@@ -58,84 +58,86 @@ def hello_world():
 	for img in sliced_images:
 		raw_data_packages.append(divoom_image.to_divoom_data(img))
 	# create BT divoom packages
-	pkgs = thing.create_animation_packages(raw_data_packages, 1)
+	pkgs = protocol.create_animation_packages(raw_data_packages, 1)
 	for i in range(0, len(pkgs)):
-		dev.send(pkgs[i])
+		device.send(pkgs[i])
 
 # ways
 # 1 horizontal from left to right
 # 2 vertical from upper to lower
 # 3 horizontal from right to left
 # 4 vertical from lower to upper
-def old_to_new(old_img, new_img, way=1):
+def old_to_new(protocol, device, old_img, new_img, way=1):
 
 	sliced_images = divoom_image.scroll_between(old_img, new_img, way)
 	pkgs = []
 	# prepare the data before sending it
 	for img in sliced_images:
 		img_raw_bytes = divoom_image.to_divoom_data(img)
-		img_bytes = thing.create_image_package(img_raw_bytes)
+		img_bytes = protocol.create_image_package(img_raw_bytes)
 		pkgs.append(img_bytes)
 	# send single images to divoom
 	for pkg in pkgs :
-		dev.send(pkg )
+		device.send(pkg )
 		time.sleep(0.1)
 		
-def scroll_sequence():
+def scroll_sequence(protocol, device):
 	img_1 = Image.open("images/example7.bmp")
 	img_2 = Image.open("images/example9.bmp")
 	img_3 = Image.open("images/firework6.bmp")
 	img_4 = Image.open("images/example3.bmp")
 	img_5 = Image.open("images/example5.bmp")
 
-	dev.send(thing.create_temp_package())
+	device.send(protocol.create_temp_package())
 	time.sleep(1)
 	first_img_raw_bytes = divoom_image.to_divoom_data(img_1)
-	first_img_bytes = thing.create_image_package(first_img_raw_bytes)
-	dev.send(first_img_bytes)
+	first_img_bytes = protocol.create_image_package(first_img_raw_bytes)
+	device.send(first_img_bytes)
 	time.sleep(4)
 
-	old_to_new(img_1, img_2, 1)
+	old_to_new(protocol, device, img_1, img_2, 1)
 	time.sleep(1)
-	old_to_new(img_2, img_3, 2)
+	old_to_new(protocol, device, img_2, img_3, 2)
 	time.sleep(1)
-	old_to_new(img_3, img_4, 3)
+	old_to_new(protocol, device, img_3, img_4, 3)
 	time.sleep(1)
-	old_to_new(img_4, img_5, 4)
+	old_to_new(protocol, device, img_4, img_5, 4)
 
+def run_demo():
+	
+	protocol = divoom_protocol.DivoomAuraBoxProtocol()
+	device = divoom_device.DivoomDevice(sys.argv[1])
 
-DIVOMM_ADR = sys.argv[1]
-thing = divoom_protocol.DivoomAuraBoxProtocol()
-dev = divoom_device.DivoomDevice(DIVOMM_ADR)
+	device.connect()
 
-dev.connect()
+	print("firework")
+	firework(protocol, device)
 
-print("firework")
-firework()
+	files = ["images/example.bmp", "images/example2.bmp", "images/example3.bmp", "images/example4.bmp", "images/example5.bmp", "images/example6.bmp", "images/example7.bmp", "images/example8.bmp", "images/example9.bmp"]
+	print("showing files")
+	show_files(protocol, device, files)
 
-files = ["images/example.bmp", "images/example2.bmp", "images/example3.bmp", "images/example4.bmp", "images/example5.bmp", "images/example6.bmp", "images/example7.bmp", "images/example8.bmp", "images/example9.bmp"]
-print("showing files")
-show_files(files)
+	print("blinking")
+	blink("images/example7.bmp")
 
-print("blinking")
-blink("images/example7.bmp")
+	print("show time")
+	device.send(protocol.create_time_package())
+	time.sleep(10)
 
-print("show time")
-dev.send(thing.create_time_package())
-time.sleep(10)
+	print("show temperature")
+	device.send(protocol.create_temp_package())
+	time.sleep(10)
 
-print("show temperature")
-dev.send(thing.create_temp_package())
-time.sleep(10)
+	print("write hello world")
+	hello_world(protocol, device)
+	time.sleep(10)
 
-print("write hello world")
-hello_world()
-time.sleep(10)
+	print("scrolling")
+	scroll_sequence(protocol, device)
 
-print("scrolling")
-scroll_sequence()
+	print("program firework")
+	firework_predefined(protocol, device)
 
-print("program firework")
-firework_predefined()
+	device.disconnect()
 
-dev.disconnect()
+run_demo()
