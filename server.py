@@ -2,6 +2,8 @@
 # https://gist.github.com/bradmontgomery/2219997
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlparse, parse_qs
+from example import show_files
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -12,6 +14,9 @@ class S(BaseHTTPRequestHandler):
     def do_GET(self):
         self._set_headers()
         self.wfile.write("got".encode("utf-8"))
+        query_params = parse_qs(urlparse(self.path).query)
+        print(query_params)
+        show_files([query_params.filename], 10)
 
     def do_POST(self):
         # Doesn't do anything with posted data
