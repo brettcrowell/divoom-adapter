@@ -1,5 +1,22 @@
 # Code to communicate with divoom devices like Aurabox. #
 
+## Getting Started ##
+
+To run the example code, you'll first need to determine the Bluetooth address of your Aurabox.
+If using a Raspberry Pi, you can do something like this...
+
+```shell
+$ sudo hcitool lescan
+LE Scan ...
+11:75:58:72:46:9A AuraBox-light
+```
+
+With the address in hand, you can launch `example.py`...
+
+```shell
+python3 example.py 11:74:58:46:9a
+```
+
 ## Features ##
 * Show time
 * Set time
