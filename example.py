@@ -118,7 +118,7 @@ def run_demo():
 	show_files(protocol, device, files)
 
 	print("blinking")
-	blink("images/example7.bmp")
+	blink(protocol, device, "images/example7.bmp")
 
 	print("show time")
 	device.send(protocol.create_time_package())
