@@ -4,18 +4,13 @@
 from sys import argv
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
-from example import show_files
-import divoom_protocol
-import divoom_device
+from example_commands import ExampleCommands
 
 class S(BaseHTTPRequestHandler):
 
     def _set_divoom(self):
-        if not hasattr(self, "protocol"):
-            self.protocol = divoom_protocol.DivoomAuraBoxProtocol()
-            self.device = divoom_device.DivoomDevice(argv[1])
-
-            self.device.connect()
+        if not hasattr(self, "commands"):
+            self.commands = ExampleCommands(argv[1])
 
     def _set_headers(self):
         self.send_response(200)
@@ -28,7 +23,8 @@ class S(BaseHTTPRequestHandler):
         query_params = parse_qs(urlparse(self.path).query)
         print(query_params)
         self._set_divoom()
-        show_files(self.protocol, self.device, [query_params["filename"][0]], 10)
+        with self.commands as commands:
+            commands.show_files([query_params["filename"][0]], 10)
 
     def do_POST(self):
         # Doesn't do anything with posted data
