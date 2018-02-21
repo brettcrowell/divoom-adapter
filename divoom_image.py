@@ -35,7 +35,7 @@ REPLACER = {BMP_DARK_GREEN:2, BMP_BLACK:0, BMP_YELLOW_OCHRE:11, 5:5, BMP_GREEN:2
 
 def pretty_print(image):
 	n = 0
-	for c in im.getdata():
+	for c in image.getdata():
 		n=n+1
 		print ("number" + str(n))
 		print ("color" + str(c))
