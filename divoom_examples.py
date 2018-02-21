@@ -1,12 +1,20 @@
 import divoom_image
+import divoom_protocol
+import divoom_device
 import time
 from PIL import Image
 
 class DivoomExamples:
 
-    def __init__(self, protocol, device):
-        self.protocol = protocol
-        self.device = device
+    def __init__(self, addr):
+        self.protocol = divoom_protocol.DivoomAuraBoxProtocol()
+        self.device = divoom_device.DivoomDevice(addr)
+
+    def __enter__(self):
+        self.device.connect()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.device.disconnect()
 
     def show_files(self, filelist, delay=1):
         for f in filelist:
@@ -100,3 +108,9 @@ class DivoomExamples:
         self.old_to_new(img_3, img_4, 3)
         time.sleep(1)
         self.old_to_new(img_4, img_5, 4)
+
+    def show_time(self):
+        self.device.send(self.protocol.create_time_package())
+
+    def show_temperature(self):
+        self.device.send(self.protocol.create_temp_package())
