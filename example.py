@@ -1,8 +1,8 @@
-import divoom_examples
+from example_commands import ExampleCommands
 import time
 import sys
 
-with divoom_examples.DivoomExamples(sys.argv[1]) as examples:
+with ExampleCommands(sys.argv[1]) as examples:
 
     print("firework")
     examples.firework()
