@@ -24,7 +24,7 @@ class S(BaseHTTPRequestHandler):
         print(query_params)
         self._set_divoom()
         with self.commands as commands:
-            commands.show_files([query_params["filename"][0]], 10)
+            commands.show_file(query_params["filename"][0])
 
     def do_POST(self):
         # Doesn't do anything with posted data
