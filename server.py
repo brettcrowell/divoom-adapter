@@ -11,7 +11,7 @@ import divoom_device
 class S(BaseHTTPRequestHandler):
 
     def _set_divoom(self):
-        if not self.protocol:
+        if not hasattr(self, "protocol"):
             self.protocol = divoom_protocol.DivoomAuraBoxProtocol()
             self.device = divoom_device.DivoomDevice(argv[1])
 
