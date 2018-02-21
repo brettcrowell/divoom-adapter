@@ -39,6 +39,14 @@ def pretty_print(image):
 		n=n+1
 		print ("number" + str(n))
 		print ("color" + str(c))
+
+def image_to_ascii(image):
+	output = ""
+	for index, color in enumerate(image.getdata()):
+		if(index % 10 == 0):
+			output = output + "\n"
+		output = output + str(color).zfill(2) + " "
+	return output
 		
 def to_(a, b):
 	'''Convert from 16bit palette to divoom color.'''
