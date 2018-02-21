@@ -28,7 +28,7 @@ class S(BaseHTTPRequestHandler):
         query_params = parse_qs(urlparse(self.path).query)
         print(query_params)
         self._set_divoom()
-        show_files(self.protocol, self.device, [query_params["filename"]], 10)
+        show_files(self.protocol, self.device, [query_params["filename"][0]], 10)
 
     def do_POST(self):
         # Doesn't do anything with posted data
