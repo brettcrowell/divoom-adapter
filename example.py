@@ -12,6 +12,7 @@ with ExampleCommands(sys.argv[1]) as examples:
         1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0,
         0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0
     ])
+    time.sleep(10)
 
     print("firework")
     examples.firework()
