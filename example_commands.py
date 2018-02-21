@@ -5,11 +5,14 @@ from PIL import Image
 
 class ExampleCommands(DivoomAdapter):
 
+    def show_file(self, filename):
+        bytes = divoom_image.image_to_divoom(filename)
+        pkg = self.protocol.create_image_package(bytes)
+        self.device.send(pkg)
+
     def show_files(self, filelist, delay=1):
         for f in filelist:
-            bytes = divoom_image.image_to_divoom(f)
-            pkg = self.protocol.create_image_package(bytes)
-            self.device.send(pkg)
+            self.show_file(f)
             time.sleep(delay)
 
     def blink(self, filename):
