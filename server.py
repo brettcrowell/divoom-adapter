@@ -21,10 +21,16 @@ class S(BaseHTTPRequestHandler):
         self._set_headers()
         self.wfile.write("got".encode("utf-8"))
         query_params = parse_qs(urlparse(self.path).query)
-        print(query_params)
         self._set_divoom()
+
+        action = query_params["action"][0]
+        value = query_params["value"][0]
+
         with self.commands as commands:
-            commands.show_file(query_params["filename"][0])
+            if (action == "show_file"):
+                commands.show_file(value)
+            elif (action == "draw_text"):
+                commands.draw_text(value)
 
     def do_POST(self):
         # Doesn't do anything with posted data
