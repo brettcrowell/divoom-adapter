@@ -12,6 +12,7 @@ class DivoomExamples:
 
     def __enter__(self):
         self.device.connect()
+        return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.device.disconnect()
