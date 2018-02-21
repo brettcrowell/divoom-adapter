@@ -10,11 +10,12 @@ import divoom_device
 
 class S(BaseHTTPRequestHandler):
 
-    def __init__(self):
-        self.protocol = divoom_protocol.DivoomAuraBoxProtocol()
-        self.device = divoom_device.DivoomDevice(argv[1])
+    def _set_divoom(self):
+        if not self.protocol:
+            self.protocol = divoom_protocol.DivoomAuraBoxProtocol()
+            self.device = divoom_device.DivoomDevice(argv[1])
 
-        self.device.connect()
+            self.device.connect()
 
     def _set_headers(self):
         self.send_response(200)
@@ -26,6 +27,7 @@ class S(BaseHTTPRequestHandler):
         self.wfile.write("got".encode("utf-8"))
         query_params = parse_qs(urlparse(self.path).query)
         print(query_params)
+        self._set_divoom()
         show_files(self.protocol, self.device, [query_params.filename], 10)
 
     def do_POST(self):
