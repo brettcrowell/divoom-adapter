@@ -35,10 +35,18 @@ REPLACER = {BMP_DARK_GREEN:2, BMP_BLACK:0, BMP_YELLOW_OCHRE:11, 5:5, BMP_GREEN:2
 
 def pretty_print(image):
 	n = 0
-	for c in im.getdata():
+	for c in image.getdata():
 		n=n+1
 		print ("number" + str(n))
 		print ("color" + str(c))
+
+def image_to_ascii(image):
+	output = ""
+	for index, color in enumerate(image.getdata()):
+		if(index % 10 == 0):
+			output = output + "\n"
+		output = output + str(color).zfill(2) + " "
+	return output
 		
 def to_(a, b):
 	'''Convert from 16bit palette to divoom color.'''
