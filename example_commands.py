@@ -1,6 +1,6 @@
 from divoom_adapter import DivoomAdapter
 import divoom_image
-import divoom_bits
+import divoom_pixel_array
 import time
 from PIL import Image
 
@@ -19,8 +19,8 @@ class ExampleCommands(DivoomAdapter):
             self.show_file(f)
             time.sleep(delay)
 
-    def show_bits(self, bits):
-        bytes = divoom_bits.bits_to_divoom(bits)
+    def show_pixel_array(self, pixels):
+        bytes = divoom_pixel_array.pixel_array_to_divoom(pixels)
         self.show_bytes(bytes)
 
     def blink(self, filename):
