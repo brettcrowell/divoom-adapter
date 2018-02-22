@@ -14,6 +14,12 @@ def to_(a, b):
     lower = a
     return upper + lower
 
+def from_(data):
+    '''Decode Divoom data back to Pixel Array'''
+    a = int(data % 8)
+    b = int(data >> 4)
+    return (a, b)
+
 def pixel_array_to_divoom(pixels):
     '''Converts an array of 100 integers, each representing a pixel, to Divoom data'''
     result = []
@@ -23,4 +29,13 @@ def pixel_array_to_divoom(pixels):
         result.append(val)
 
     return result
+
+def divoom_to_pixel_array(data):
+    '''Given divoom raw data returns pixel array'''
+    result = []
+    for d in data:
+        a, b = from_(d)
+        result.append(a)
+        result.append(b)
+
     return result
