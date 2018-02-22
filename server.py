@@ -28,7 +28,7 @@ class S(BaseHTTPRequestHandler):
 
         length = int(self.headers["content-length"])
         payload = self.rfile.read(length)
-        data = json.loads(payload)
+        data = json.loads(payload.decode("utf-8"))
 
         action = data["action"]
         value = data["value"]
