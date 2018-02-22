@@ -38,6 +38,8 @@ class S(BaseHTTPRequestHandler):
                 commands.show_file(value)
             elif action == "draw_text":
                 commands.draw_text(value)
+            elif action == "show_pixel_array":
+                commands.show_pixel_array(value)
 
     def do_HEAD(self):
         self._set_headers()
