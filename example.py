@@ -4,6 +4,16 @@ import sys
 
 with ExampleCommands(sys.argv[1]) as examples:
 
+    print("pixel array")
+    examples.show_pixel_array([
+        0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+        1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+        1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0,
+        0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0
+    ])
+    time.sleep(10)
+
     print("firework")
     examples.firework()
 
@@ -23,7 +33,7 @@ with ExampleCommands(sys.argv[1]) as examples:
     time.sleep(10)
 
     print("write hello world")
-    examples.hello_world()
+    examples.draw_text("HELLO, WORLD")
     time.sleep(10)
 
     print("scrolling")

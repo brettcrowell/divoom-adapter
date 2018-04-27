@@ -1,19 +1,27 @@
 from divoom_adapter import DivoomAdapter
 import divoom_image
+import divoom_pixel_array
 import time
 from PIL import Image
 
 class ExampleCommands(DivoomAdapter):
 
-    def show_file(self, filename):
-        bytes = divoom_image.image_to_divoom(filename)
+    def show_bytes(self, bytes):
         pkg = self.protocol.create_image_package(bytes)
         self.device.send(pkg)
+
+    def show_file(self, filename):
+        bytes = divoom_image.image_to_divoom(filename)
+        self.show_bytes(bytes)
 
     def show_files(self, filelist, delay=1):
         for f in filelist:
             self.show_file(f)
             time.sleep(delay)
+
+    def show_pixel_array(self, pixels):
+        bytes = divoom_pixel_array.pixel_array_to_divoom(pixels)
+        self.show_bytes(bytes)
 
     def blink(self, filename):
         for c in range(1, 20):
@@ -48,8 +56,8 @@ class ExampleCommands(DivoomAdapter):
         for i in range(0, len(pkgs)):
             self.device.send(pkgs[i])
 
-    def hello_world(self):
-        img = divoom_image.draw_text_to_image(text="HELLO WORLD", color=divoom_image.BMP_YELLOW, size=(70, 10))
+    def draw_text(self, text="HELLO WORLD"):
+        img = divoom_image.draw_text_to_image(text=text, color=divoom_image.BMP_YELLOW, size=(70, 10))
         sliced_images = divoom_image.horizontal_slices(img)
         # create divoom packages
         raw_data_packages = []
