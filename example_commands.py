@@ -56,8 +56,8 @@ class ExampleCommands(DivoomAdapter):
         for i in range(0, len(pkgs)):
             self.device.send(pkgs[i])
 
-    def hello_world(self):
-        img = divoom_image.draw_text_to_image(text="HELLO WORLD", color=divoom_image.BMP_YELLOW, size=(70, 10))
+    def draw_text(self, text="HELLO WORLD"):
+        img = divoom_image.draw_text_to_image(text=text, color=divoom_image.BMP_YELLOW, size=(70, 10))
         sliced_images = divoom_image.horizontal_slices(img)
         # create divoom packages
         raw_data_packages = []

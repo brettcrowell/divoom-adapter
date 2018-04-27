@@ -33,7 +33,7 @@ with ExampleCommands(sys.argv[1]) as examples:
     time.sleep(10)
 
     print("write hello world")
-    examples.hello_world()
+    examples.draw_text("HELLO, WORLD")
     time.sleep(10)
 
     print("scrolling")
