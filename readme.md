@@ -9,7 +9,7 @@ If using a Raspberry Pi, you can do something like this...
 ```shell
 $ sudo apt-get update
 $ sudo apt-get install python3-pip
-$ sudo apt-get install libboost-python-dev libboost-thread-dev libbluetooth-dev libglib2.0-dev pulseaudio-module-bluetooth
+$ sudo apt-get install libboost-python-dev libboost-thread-dev libbluetooth-dev libglib2.0-dev libtiff5 pulseaudio-module-bluetooth
 ```
 
 Next, you can use `bluetoothctl` to find the Bluetooth ID of your Aurabox
