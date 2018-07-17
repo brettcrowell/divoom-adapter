@@ -2,19 +2,45 @@
 
 ## Getting Started ##
 
-To run the example code, you'll first need to determine the Bluetooth address of your Aurabox.
+To run the example code, you'll first need to install a few Bluetooth tools from `apt`
+
 If using a Raspberry Pi, you can do something like this...
 
 ```shell
-$ sudo hcitool lescan
-LE Scan ...
-11:75:58:72:46:9A AuraBox-light
+$ sudo apt-get update
+$ sudo apt-get install python3-pip
+$ sudo apt-get install libboost-python-dev libboost-thread-dev libbluetooth-dev libglib2.0-dev pulseaudio-module-bluetooth
 ```
 
-With the address in hand, you can launch `example.py`...
+Next, you can use `bluetoothctl` to find the Bluetooth ID of your Aurabox
 
 ```shell
-python3 example.py 11:75:58:72:46:9A
+$ bluetoothctl
+[bluetooth]# power on
+[bluetooth]# agent on
+[bluetooth]# scan on
+```
+
+_https://lifehacker.com/everything-you-need-to-set-up-bluetooth-on-the-raspberr-1768482065_
+
+Once you find the address, you can turn off the scan, trust it, and connect
+
+```shell
+[bluetooth]# scan off
+[bluetooth]# trust 11:75:58:72:46:9A
+[bluetooth]# connect 11:75:58:72:46:9A
+```
+
+Finally, with the address in hand, you can install the Python dependencies...
+
+```shell
+$ pip3 install -r requirements.txt
+```
+
+...and launch `example.py`...
+
+```shell
+$ python3 example.py 11:75:58:72:46:9A
 ```
 
 ## Features ##
